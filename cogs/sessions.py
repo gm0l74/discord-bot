@@ -18,7 +18,7 @@ from utils import record_usage
 class Jams(commands.Cog):
     '''
     Collection of commands to launch curated sets of playlists
-    
+
     Attributes:
         bot: commands.Bot
             Bot instance that is executing the commands.
@@ -38,7 +38,7 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://open.spotify.com/playlist/37i9dQZF1DZ06evO2YcT04?si=b935ac263b7447a5'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'This is Keane\'!')
 
     @commands.before_invoke(record_usage)
@@ -51,7 +51,7 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://open.spotify.com/playlist/37i9dQZF1DXb3BV2Rig4yV?si=f84c6493761d459f'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'This is Phil Collins\'!')
 
     @commands.before_invoke(record_usage)
@@ -64,7 +64,7 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://www.youtube.com/watch?v=kJQP7kiw5Fk'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
 
     @commands.before_invoke(record_usage)
@@ -77,7 +77,7 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://open.spotify.com/track/0rMoGHo974tZkjpqnzG1pl?si=a4f2b6e874614c1b'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'Ruizinho da Penacova\'!')
 
     @commands.before_invoke(record_usage)
@@ -90,7 +90,7 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://www.youtube.com/watch?v=3LyGVsdYSDI'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'UEFA Champions League Anthem\'!')
 
     @commands.before_invoke(record_usage)
@@ -110,8 +110,25 @@ class Jams(commands.Cog):
             self.bot.get_command('play'),
             search = 'https://www.youtube.com/watch?v=KzP1MntXTF0'
         )
-        
+
         await ctx.send(f'**`{ctx.author}`**: Queued \'Oliver e Benji\'!')
+
+
+    @commands.command(name='worldwide', aliases=['pitbull'], help = 'Queues \'Mr. WorldWide - Mr. 305\'.')
+    async def worldwide(self, ctx: commands.Context):
+        '''
+        Queues Spotify playlist: The True Pitbull.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://open.spotify.com/playlist/4rSQgiTkx0ihUKPwq8WBbF?si=b9e70d846d4844e8'
+        )
+
+        await ctx.invoke(
+            self.bot.get_command('shuffle'),
+        )
+
+        await ctx.send(f'**`{ctx.author}`**: Queued \'The True Pitbull\'!')
 
 #---------------------------------
 # Setup
