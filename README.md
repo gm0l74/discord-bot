@@ -1,9 +1,8 @@
-<img src="https://github.com/gm0l74/discord-bot/blob/master/botpic.jpg" width="256" />
-
-# ATuaMae
-## Discord Bot
-
-@ author gm0l74<br />
+<div align="center">
+  <img src="https://github.com/gm0l74/discord-bot/blob/master/botpic.jpg" width="256" style="border-radius: 128px;"/>
+  <h1>ATuaMae</h1>
+  <h3>Discord Bot with Python</h3>
+</div>
 @ updated 03-11-2022<br />
 
 # APIs
