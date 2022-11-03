@@ -1,3 +1,5 @@
+<img src="https://github.com/gm0l74/discord-bot/blob/master/botpic.jpg" width="256" />
+
 # ATuaMae
 ## Discord Bot
 
