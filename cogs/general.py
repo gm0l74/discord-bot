@@ -28,6 +28,11 @@ class General(commands.Cog):
     async def gay(self, ctx: commands.Context):
         await ctx.send('Sim, de facto, o Bacano é gay!')
 
+    @commands.before_invoke(record_usage)
+    @commands.command(name = 'ripbozo', help = 'Quando?')
+    async def gay(self, ctx: commands.Context):
+        await ctx.send('https://tenor.com/view/rip-bozo-gif-22294771')
+
 #---------------------------------
 # Setup
 #---------------------------------
