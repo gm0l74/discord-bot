@@ -1,5 +1,7 @@
 <div align="center">
-  <img src="https://github.com/gm0l74/discord-bot/blob/master/botpic.jpg" width="256" style="border-radius: 128px;"/>
+    <a href="url">
+    <img src="https://github.com/gm0l74/discord-bot/blob/master/botpic.jpg" height="auto" width="128" style="border-radius:50%" />
+    </a>
   <h1>ATuaMae</h1>
   <h3>Discord Bot with Python</h3>
 </div>
