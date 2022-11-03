@@ -9,11 +9,7 @@
 #---------------------------------
 # Imports
 #---------------------------------
-import asyncio
-
-import discord
 from discord.ext import commands
-
 from utils import record_usage
 
 #---------------------------------
@@ -72,14 +68,14 @@ class Jams(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='champions', help = 'Queues \'UEFA Champions League Anthem\'.')
+    @commands.command(name='champions',aliases=['uefa'], help = 'Queues \'UEFA Champions League Anthem\'.')
     async def champions(self, ctx: commands.Context):
         '''
         Queues song Champions League Anthem.
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://www.youtube.com/watch?v=zwV3h1vqU0A'
+            search = 'https://www.youtube.com/watch?v=3LyGVsdYSDI'
         )
         
         await ctx.send(f'**`{ctx.author}`**: Queued \'UEFA Champions League Anthem\'!')
