@@ -1,0 +1,5 @@
+discord.py
+python-dotenv
+youtube_dl
+spotipy==2.21.0
+PyNaCl
