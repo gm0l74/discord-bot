@@ -46,6 +46,19 @@ class Jams(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Queued \'This is Keane\'!')
 
     @commands.before_invoke(record_usage)
+    @commands.command(name='philcollins', aliases=['phil', 'collins'], help = 'Queues \'This is Phil Collins\'.')
+    async def philcollins(self, ctx: commands.Context):
+        '''
+        Queues Spotify playlist: This is Phil Collins.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://open.spotify.com/playlist/37i9dQZF1DXb3BV2Rig4yV?si=f84c6493761d459f'
+        )
+        
+        await ctx.send(f'**`{ctx.author}`**: Queued \'This is Phil Collins\'!')
+
+    @commands.before_invoke(record_usage)
     @commands.command(name='despacito', help = 'Queues \'Despacito\'.')
     async def despacito(self, ctx: commands.Context):
         '''
@@ -57,6 +70,39 @@ class Jams(commands.Cog):
         )
         
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='champions', help = 'Queues \'UEFA Champions League Anthem\'.')
+    async def champions(self, ctx: commands.Context):
+        '''
+        Queues song Champions League Anthem.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://www.youtube.com/watch?v=zwV3h1vqU0A'
+        )
+        
+        await ctx.send(f'**`{ctx.author}`**: Queued \'UEFA Champions League Anthem\'!')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='oliverbenji', aliases=['oliver', 'benji'], help = 'Queues PT Intro/Outro of \'Oliver e Benji\'.')
+    async def oliver(self, ctx: commands.Context):
+        '''
+        Queues Intro and Outro of Oliver e Benji (PT).
+        '''
+        # Oliver e Benji 1ª Abertura - Portugal
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://www.youtube.com/watch?v=hAShEnz1glk'
+        )
+
+        # Captain Tsubasa Road to 2002 Portuguese Ending #2
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://www.youtube.com/watch?v=KzP1MntXTF0'
+        )
+        
+        await ctx.send(f'**`{ctx.author}`**: Queued \'Oliver e Benji\'!')
 
 #---------------------------------
 # Setup
