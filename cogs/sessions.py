@@ -68,7 +68,7 @@ class Jams(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='Ruizinho', help = 'Queues \'Ruizinho da Penacova\'.')
+    @commands.command(name='ruizinho', help = 'Queues \'Ruizinho da Penacova\'.')
     async def ruizinho(self, ctx: commands.Context):
         '''
         Queues song 'Vida de Teso' by Ruizinho da Penacova.
