@@ -68,6 +68,19 @@ class Jams(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
 
     @commands.before_invoke(record_usage)
+    @commands.command(name='Ruizinho', help = 'Queues \'Ruizinho da Penacova\'.')
+    async def ruizinho(self, ctx: commands.Context):
+        '''
+        Queues song 'Vida de Teso' by Ruizinho da Penacova.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            search = 'https://open.spotify.com/track/0rMoGHo974tZkjpqnzG1pl?si=a4f2b6e874614c1b'
+        )
+        
+        await ctx.send(f'**`{ctx.author}`**: Queued \'Ruizinho da Penacova\'!')
+
+    @commands.before_invoke(record_usage)
     @commands.command(name='champions',aliases=['uefa'], help = 'Queues \'UEFA Champions League Anthem\'.')
     async def champions(self, ctx: commands.Context):
         '''
