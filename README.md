@@ -15,6 +15,9 @@ https://realpython.com/how-to-make-a-discord-bot-python/
 The obtained token should be inserted in the '.env' file in the project's root
 directory, as an evironment variable named <DISCORD_TOKEN>.
 
+Consult the documentation of the Discord API for Python at the following link:
+https://discordpy.readthedocs.io/en/stable/index.html
+
 ## Spotify App Credentials
 
 Obtain the the *CLIENT_ID* and *CLIENT_SECRET* from the Spotify Developer Dashboard,
