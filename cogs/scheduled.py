@@ -7,14 +7,10 @@
 #---------------------------------
 
 #---------------------------------
-# Docs
-#---------------------------------
-# https://stackoverflow.com/questions/59801751/discordpy-tasks-not-working-as-expected-no-returning
-# https://stackoverflow.com/questions/65124909/i-want-to-run-task-everyday-0000-discord-py
-
-#---------------------------------
 # Imports
 #---------------------------------
+from datetime import time
+
 import discord, spotipy
 from discord.ext import commands, tasks
 
@@ -26,9 +22,6 @@ from typing import Callable
 #---------------------------------
 # Utils
 #---------------------------------
-class Object(object):
-    pass
-
 # Hacky workaround to get around the fact that discord.py
 # doesnt provide 'context' to a task.loop
 # 
@@ -40,13 +33,13 @@ def mock_ctx(
     voice_client: discord.VoiceClient,
     send_message: Callable
 ):
-    ctx = Object()
+    ctx = object()
 
-    ctx.guild = Object()
+    ctx.guild = object()
     ctx.guild.voice_client = voice_client
     ctx.guild.id = guild_idx
 
-    ctx.channel = Object()
+    ctx.channel = object()
     ctx.channel.id = channel_idx
 
     ctx.bot = bot
@@ -102,18 +95,23 @@ class Scheduled(commands.Cog):
     def cog_unload(self):
         self.keane.cancel()
 
-    @tasks.loop(hours = 24)
+    #---------------------------------------------------------------------------------------------------
+    # TASK: Keane
+    #---------------------------------------------------------------------------------------------------
+    @tasks.loop(time = time(23, 0, 0))
     async def keane(self):
         '''
-        Scheduled task to automatically queue the Spotify playlist: 'This is Keane'.
+        Schedule a task to automatically queue the Spotify playlist: 'This is Keane'
+        every day at 23:00.
         '''
-        # TODO: thread this
+        # TODO: thread this. if not threaded, only the first server runs the task on time
         for guild_idx, channel_idx in self.voice_channels.items():
             # Connect to the voice channel of the guild
             vc = self.bot.get_channel(channel_idx)
             try:
                 voice = await vc.connect()
             except discord.errors.ClientException:
+                # Ignore, since it its probably already connected to the voice channel
                 pass
             
             ctx = mock_ctx(
@@ -134,8 +132,6 @@ class Scheduled(commands.Cog):
                 self.spotify,
                 'https://open.spotify.com/playlist/37i9dQZF1DZ06evO2YcT04?si=b935ac263b7447a5'
             )
-            if isinstance(queries, str):
-                queries = [search]
             
             for search in queries:
                 source = await Song.create_source(ctx, search, loop = self.bot.loop)
@@ -143,7 +139,20 @@ class Scheduled(commands.Cog):
 
     @keane.before_loop
     async def before_keane_task(self):
-        # TODO: run at a specific time
+        await self.bot.wait_until_ready()
+
+    #---------------------------------------------------------------------------------------------------
+    # TASK: Birthdays
+    #---------------------------------------------------------------------------------------------------
+    @tasks.loop(time = time(0, 0, 0))
+    async def birthdays(self):
+        '''
+        TODO
+        '''
+        pass
+
+    @birthdays.before_loop
+    async def before_birthdays_task(self):
         await self.bot.wait_until_ready()
 
 #---------------------------------
