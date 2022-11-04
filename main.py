@@ -3,7 +3,7 @@
 # main.py
 #
 # @ start date          01 11 2022
-# @ last update         02 11 2022
+# @ last update         04 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 import cogs.music as music
 import cogs.general as general
 import cogs.sessions as sessions
+import cogs.scheduled as scheduled
 
 from utils import setup_spotify
 
@@ -67,8 +68,9 @@ def init_configs(bot: commands.Bot):
     loop = asyncio.get_event_loop()
     tasks = [
         music.setup(bot, spotify),
+        scheduled.setup(bot, spotify),
         sessions.setup(bot),
-        general.setup(bot)
+        general.setup(bot),
     ]
     loop.run_until_complete(asyncio.wait(tasks))
 
