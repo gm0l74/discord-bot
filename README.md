@@ -30,6 +30,11 @@ as evironment variables named <SPOTIFY_CLIENT_ID> and <SPOTIFY_SECRET>.
 Consult the documentation of the Spotify API for Python at the following link:
 https://spotipy.readthedocs.io/en/2.21.0/
 
+## SoundCloud
+
+Consult the documentation of the SoundCloud API at the following link:
+https://developers.soundcloud.com/docs/api/guide
+
 # Installation
 
 It is advised to use a virtual environment to install the dependencies.

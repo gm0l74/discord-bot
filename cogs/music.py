@@ -14,7 +14,7 @@ import asyncio
 import discord, spotipy
 from discord.ext import commands
 
-from utils import record_usage, handle_playlist_request
+from utils import record_usage, handle_playlist_request, soundcloud_playlist
 
 from utils.music.song import Song
 from utils.music.controller import Controller
@@ -63,6 +63,9 @@ class Music(commands.Cog):
             await ctx.invoke(self.connect)
 
         controller = self.get_controller_for(ctx)
+
+        # TODO: Add support for soundcloud tracks and playlists
+        # await soundcloud_playlist(search)
 
         # Handle Playlists
         queries = await handle_playlist_request(self.spotify, search)

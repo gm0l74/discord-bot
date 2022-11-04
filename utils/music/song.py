@@ -54,7 +54,8 @@ class Song:
             data = data['entries'][0]
 
         await ctx.send(f'Added {data["title"]} to the Queue.', delete_after = 15)
-        # TODO more info about the song
+        # TODO more info about the song,
+        # https://github.com/rg3/youtube-dl/blob/master/README.md to get more info
         return {
             'webpage_url': data['webpage_url'],
             'requester': ctx.author,

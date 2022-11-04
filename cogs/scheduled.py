@@ -9,7 +9,8 @@
 #---------------------------------
 # Imports
 #---------------------------------
-from datetime import time
+import os, json, asyncio
+from datetime import datetime, time
 
 import discord, spotipy
 from discord.ext import commands, tasks
@@ -22,6 +23,9 @@ from typing import Callable
 #---------------------------------
 # Utils
 #---------------------------------
+class Object(object):
+    pass
+
 # Hacky workaround to get around the fact that discord.py
 # doesnt provide 'context' to a task.loop
 # 
@@ -33,13 +37,13 @@ def mock_ctx(
     voice_client: discord.VoiceClient,
     send_message: Callable
 ):
-    ctx = object()
+    ctx = Object()
 
-    ctx.guild = object()
+    ctx.guild = Object()
     ctx.guild.voice_client = voice_client
     ctx.guild.id = guild_idx
 
-    ctx.channel = object()
+    ctx.channel = Object()
     ctx.channel.id = channel_idx
 
     ctx.bot = bot
@@ -72,6 +76,13 @@ class Scheduled(commands.Cog):
         self.text_channels = {}
         self.voice_channels = {}
 
+        self.db = json.load(open(
+            os.path.join(
+                os.path.dirname(os.path.realpath(__file__)),
+                '..', 'utils', 'birthdays', 'db.json'
+            ), 'r'
+        ))
+
     @commands.Cog.listener()
     async def on_ready(self):
         # Populate the communication channels of the bot
@@ -91,9 +102,11 @@ class Scheduled(commands.Cog):
         # Start the scheduled tasks
         if not self.keane.is_running():
             self.keane.start()
+            self.birthdays.start()
 
     def cog_unload(self):
         self.keane.cancel()
+        self.birthdays.cancel()
 
     #---------------------------------------------------------------------------------------------------
     # TASK: Keane
@@ -105,23 +118,22 @@ class Scheduled(commands.Cog):
         every day at 23:00.
         '''
         # TODO: thread this. if not threaded, only the first server runs the task on time
-        for guild_idx, channel_idx in self.voice_channels.items():
+        for guild_idx, voice_channel_idx in self.voice_channels.items():
             # Connect to the voice channel of the guild
-            vc = self.bot.get_channel(channel_idx)
+            vc = self.bot.get_channel(voice_channel_idx)
             try:
                 voice = await vc.connect()
             except discord.errors.ClientException:
                 # Ignore, since it its probably already connected to the voice channel
                 pass
             
+            text_channel = self.bot.get_channel(self.text_channels[guild_idx])
             ctx = mock_ctx(
                 guild_idx = guild_idx,
-                channel_idx = channel_idx,
+                channel_idx = voice_channel_idx,
                 bot = self.bot,
                 voice_client = voice,
-                send_message = lambda t, **kwargs: self.bot.get_channel(
-                    self.text_channels[guild_idx]
-                ).send(t, **kwargs)
+                send_message = lambda t, **kwargs: text_channel.send(t, **kwargs)
             )
 
             # Load the music controller from the cog: Music
@@ -147,9 +159,44 @@ class Scheduled(commands.Cog):
     @tasks.loop(time = time(0, 0, 0))
     async def birthdays(self):
         '''
-        TODO
+        Schedule a task to automatically wish a happy birthday.
         '''
-        pass
+        now = datetime.now().strftime('%d-%m')
+        if now not in self.db:
+            # No birthdays today
+            return
+        
+        name = self.db[now]
+        for guild_idx, voice_channel_idx in self.voice_channels.items():
+            # Connect to the voice channel of the guild
+            vc = self.bot.get_channel(voice_channel_idx)
+            try:
+                voice = await vc.connect()
+            except discord.errors.ClientException:
+                # Ignore, since it its probably already connected to the voice channel
+                pass
+            
+            # Create the ctx
+            text_channel = self.bot.get_channel(self.text_channels[guild_idx])
+            ctx = mock_ctx(
+                guild_idx = guild_idx,
+                channel_idx = voice_channel_idx,
+                bot = self.bot,
+                voice_client = voice,
+                send_message = lambda t, **kwargs: asyncio.sleep(0)
+            )
+
+            controller = self.bot.get_cog('Music').get_controller_for(ctx)
+            source = await Song.create_source(
+                ctx,
+                'https://www.youtube.com/watch?v=scboWq7ZQGs',
+                loop = self.bot.loop
+            )
+            await controller.queue.put(source)
+
+            # TODO: improve message template
+            m = await text_channel.send(f'PARABENS {name}!')
+            await m.add_reaction('\N{THUMBS UP SIGN}')
 
     @birthdays.before_loop
     async def before_birthdays_task(self):

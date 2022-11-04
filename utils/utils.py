@@ -26,6 +26,17 @@ def setup_spotify(client: str, secret: str):
     )
 
 #---------------------------------
+# Soundcloud
+#---------------------------------
+async def soundcloud_playlist(search: str):
+    # TODO
+    # <articles> inside <section class="tracklist">
+    # get its 'href'
+    # combine with https://soundcloud.com{href}
+    # force refresh to see more articles
+    pass
+
+#---------------------------------
 # Spotify
 #---------------------------------
 async def spotify_album(spotify: spotipy.Spotify, code: str):

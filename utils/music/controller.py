@@ -101,6 +101,8 @@ class Controller:
                 await self.np.delete()
             except discord.HTTPException:
                 pass
+            # TODO: expect with no message
+
 
     def destroy(self, guild: discord.Guild):
         '''
