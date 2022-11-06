@@ -3,7 +3,7 @@
 # cogs/scheduled.py
 #
 # @ start date          03 11 2022
-# @ last update         04 11 2022
+# @ last update         06 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -79,7 +79,7 @@ class Scheduled(commands.Cog):
         self.db = json.load(open(
             os.path.join(
                 os.path.dirname(os.path.realpath(__file__)),
-                '..', 'utils', 'birthdays', 'db.json'
+                '..', 'birthdays_db.json'
             ), 'r'
         ))
 
@@ -183,7 +183,7 @@ class Scheduled(commands.Cog):
                 channel_idx = voice_channel_idx,
                 bot = self.bot,
                 voice_client = voice,
-                send_message = lambda t, **kwargs: asyncio.sleep(0)
+                send_message = lambda msg, **kwargs: asyncio.sleep(0)
             )
 
             controller = self.bot.get_cog('Music').get_controller_for(ctx)
@@ -194,8 +194,7 @@ class Scheduled(commands.Cog):
             )
             await controller.queue.put(source)
 
-            # TODO: improve message template
-            m = await text_channel.send(f'PARABENS {name}!')
+            m = await text_channel.send(f'Parabéns chavalo **{name}**! {":tada:" * 5}{"partying_face" * 5}')
             await m.add_reaction('\N{THUMBS UP SIGN}')
 
     @birthdays.before_loop

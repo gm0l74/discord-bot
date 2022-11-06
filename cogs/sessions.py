@@ -3,7 +3,7 @@
 # cogs/sessions.py
 #
 # @ start date          03 11 2022
-# @ last update         03 11 2022
+# @ last update         06 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -36,7 +36,7 @@ class Jams(commands.Cog):
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://open.spotify.com/playlist/37i9dQZF1DZ06evO2YcT04?si=b935ac263b7447a5'
+            'https://open.spotify.com/playlist/37i9dQZF1DZ06evO2YcT04?si=b935ac263b7447a5'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'This is Keane\'!')
@@ -49,7 +49,7 @@ class Jams(commands.Cog):
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://open.spotify.com/playlist/37i9dQZF1DXb3BV2Rig4yV?si=f84c6493761d459f'
+            'https://open.spotify.com/playlist/37i9dQZF1DXb3BV2Rig4yV?si=f84c6493761d459f'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'This is Phil Collins\'!')
@@ -62,7 +62,7 @@ class Jams(commands.Cog):
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://www.youtube.com/watch?v=kJQP7kiw5Fk'
+            'https://www.youtube.com/watch?v=kJQP7kiw5Fk'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'Despacito\'!')
@@ -75,10 +75,23 @@ class Jams(commands.Cog):
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://open.spotify.com/track/0rMoGHo974tZkjpqnzG1pl?si=a4f2b6e874614c1b'
+            'https://open.spotify.com/track/0rMoGHo974tZkjpqnzG1pl?si=a4f2b6e874614c1b'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'Ruizinho da Penacova\'!')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='bicho', help = 'Queues \'O bicho\'.')
+    async def ruizinho(self, ctx: commands.Context):
+        '''
+        Queues song 'O bicho' by Iran Costa.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            'https://www.youtube.com/watch?v=Ma8AEbLmJn0'
+        )
+
+        await ctx.send(f'**`{ctx.author}`**: Queued \'Iran Costa - O bicho\'!')
 
     @commands.before_invoke(record_usage)
     @commands.command(name='champions',aliases=['uefa'], help = 'Queues \'UEFA Champions League Anthem\'.')
@@ -88,7 +101,7 @@ class Jams(commands.Cog):
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://www.youtube.com/watch?v=3LyGVsdYSDI'
+            'https://www.youtube.com/watch?v=3LyGVsdYSDI'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'UEFA Champions League Anthem\'!')
@@ -97,18 +110,18 @@ class Jams(commands.Cog):
     @commands.command(name='oliverbenji', aliases=['oliver', 'benji'], help = 'Queues PT Intro/Outro of \'Oliver e Benji\'.')
     async def oliver(self, ctx: commands.Context):
         '''
-        Queues Intro and Outro of Oliver e Benji (PT).
+        Queues Intro and Outro of 'Oliver e Benji' (PT).
         '''
         # Oliver e Benji 1ª Abertura - Portugal
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://www.youtube.com/watch?v=hAShEnz1glk'
+            'https://www.youtube.com/watch?v=hAShEnz1glk'
         )
 
         # Captain Tsubasa Road to 2002 Portuguese Ending #2
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://www.youtube.com/watch?v=KzP1MntXTF0'
+            'https://www.youtube.com/watch?v=KzP1MntXTF0'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'Oliver e Benji\'!')
@@ -117,18 +130,26 @@ class Jams(commands.Cog):
     @commands.command(name='worldwide', aliases=['pitbull'], help = 'Queues \'Mr. WorldWide - Mr. 305\'.')
     async def worldwide(self, ctx: commands.Context):
         '''
-        Queues Spotify playlist: The True Pitbull.
+        Queues Spotify playlist: 'The True Pitbull'.
         '''
         await ctx.invoke(
             self.bot.get_command('play'),
-            search = 'https://open.spotify.com/playlist/4rSQgiTkx0ihUKPwq8WBbF?si=b9e70d846d4844e8'
-        )
-
-        await ctx.invoke(
-            self.bot.get_command('shuffle'),
+            'https://open.spotify.com/playlist/4rSQgiTkx0ihUKPwq8WBbF?si=b9e70d846d4844e8'
         )
 
         await ctx.send(f'**`{ctx.author}`**: Queued \'The True Pitbull\'!')
+
+    @commands.command(name='djjajao', aliases=['jajao', 'dj'], help = 'Queues \'Orbital Mix - Best Of\' by DJ Jajao.')
+    async def djjajao(self, ctx: commands.Context):
+        '''
+        Queues SoundCloud playlist: 'Orbital Mix - Best Of'.
+        '''
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            'https://soundcloud.com/erasojajao/sets/orbital-mix-best-of-1'
+        )
+
+        await ctx.send(f'**`{ctx.author}`**: Queued \'Orbital Mix - Best Of\' by DJ Jajao!')
 
 #---------------------------------
 # Setup

@@ -3,7 +3,7 @@
 # utils/music/controller.py
 #
 # @ start date          03 11 2022
-# @ last update         03 11 2022
+# @ last update         04 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -101,8 +101,10 @@ class Controller:
                 await self.np.delete()
             except discord.HTTPException:
                 pass
-            # TODO: expect with no message
-
+            except AttributeError:
+                # No message has actually been sent
+                # It has probably been faked
+                pass
 
     def destroy(self, guild: discord.Guild):
         '''

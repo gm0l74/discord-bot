@@ -3,3 +3,4 @@ python-dotenv
 youtube_dl
 spotipy==2.21.0
 PyNaCl
+beautifulsoup4==4.11.1

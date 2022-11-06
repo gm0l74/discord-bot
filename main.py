@@ -3,7 +3,7 @@
 # main.py
 #
 # @ start date          01 11 2022
-# @ last update         04 11 2022
+# @ last update         06 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -50,11 +50,9 @@ class Client(commands.Bot):
     async def on_ready(self):
         print(f'{self.user.name} has connected to Discord!')
 
+        # List all servers that are connected to the bot
         for guild in self.guilds:
-            print(
-                f'{self.user} connected to {guild.name}(id: {guild.id});'
-                f' ADMIN ? {guild.me.guild_permissions.administrator}'
-            )
+            print(f'{self.user} connected to {guild.name}(id: {guild.id})')
 
 #---------------------------------
 # Execute

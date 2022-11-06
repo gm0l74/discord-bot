@@ -54,18 +54,17 @@ class Music(commands.Cog):
 
     @commands.before_invoke(record_usage)
     @commands.command(name = 'play', aliases = ['p'], help = 'Play a song using spotify or youtube.')
-    async def play(self, ctx: commands.Context, search: str):
+    async def play(self, ctx: commands.Context, *search):
         '''
         Enqueue a song (fetched by YouTube URL or YouTube Search).
         '''
+        search = ' '.join(search)
+
         vc = ctx.voice_client
         if not vc:
             await ctx.invoke(self.connect)
 
         controller = self.get_controller_for(ctx)
-
-        # TODO: Add support for soundcloud tracks and playlists
-        # await soundcloud_playlist(search)
 
         # Handle Playlists
         queries = await handle_playlist_request(self.spotify, search)
@@ -80,8 +79,12 @@ class Music(commands.Cog):
                 info = self.spotify.track(code)
                 search = f'{info["name"]} - {",".join(x["name"] for x in info["artists"])}'
 
-            source = await Song.create_source(ctx, search, loop = self.bot.loop)
-            await controller.queue.put(source)
+            try:
+                source = await Song.create_source(ctx, search, loop = self.bot.loop)
+                await controller.queue.put(source)
+            except Exception:
+                # Convers fetching errors such as 404s and geo-blocked content
+                pass
 
     @commands.before_invoke(record_usage)
     @commands.command(name = 'shuffle', help = 'Shuffle the music playlist.')
