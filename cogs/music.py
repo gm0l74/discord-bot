@@ -170,6 +170,36 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Stopped the playlist!')
         await self.disconnect(ctx.guild)
 
+    @commands.before_invoke(record_usage)
+    @commands.command(name='queue', help='Show the current playlist.')
+    async def queue(self, ctx: commands.Context):
+        '''
+        Show the current playlist.
+        '''
+        vc = ctx.voice_client
+
+        if not vc or not vc.is_connected():
+            return await ctx.send(
+                'Not connected to voice!',
+                delete_after = 15
+            )
+        
+        controller = self.get_controller_for(ctx)
+        if controller.queue.empty():
+            return await ctx.send(
+                'No songs are queued!',
+                delete_after = 15
+            )
+
+        songs = list(controller.queue._queue)[:10]
+        msg = '```css\n'
+
+        for i, song in enumerate(songs):
+            msg += f'{i+1}. {song["title"]} [{song["requester"].name}]\n'
+
+        msg += '```'
+        await ctx.send(msg)
+
     async def connect(self, ctx: commands.Context, *, channel: discord.VoiceChannel = None):
         '''
         Connect to voice.
