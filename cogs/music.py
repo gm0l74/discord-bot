@@ -3,7 +3,7 @@
 # cogs/music.py
 #
 # @ start date          02 11 2022
-# @ last update         03 11 2022
+# @ last update         07 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -11,10 +11,10 @@
 #---------------------------------
 import asyncio
 
-import discord, spotipy
+import discord, spotipy, youtube_dl
 from discord.ext import commands
 
-from utils import record_usage, handle_playlist_request, soundcloud_playlist
+from utils import record_usage, handle_playlist_request
 
 from utils.music.song import Song
 from utils.music.controller import Controller
@@ -53,13 +53,12 @@ class Music(commands.Cog):
         return controller
 
     @commands.before_invoke(record_usage)
-    @commands.command(name = 'play', aliases = ['p'], help = 'Play a song using spotify or youtube.')
+    @commands.command(name='play', aliases = ['p'], help='Play a song using spotify or youtube.')
     async def play(self, ctx: commands.Context, *search):
         '''
         Enqueue a song (fetched by YouTube URL or YouTube Search).
         '''
         search = ' '.join(search)
-
         vc = ctx.voice_client
         if not vc:
             await ctx.invoke(self.connect)
@@ -79,15 +78,19 @@ class Music(commands.Cog):
                 info = self.spotify.track(code)
                 search = f'{info["name"]} - {",".join(x["name"] for x in info["artists"])}'
 
+            # Handle a possible !stop
+            if ctx.guild.id not in self.controllers:
+                break
+
             try:
                 source = await Song.create_source(ctx, search, loop = self.bot.loop)
                 await controller.queue.put(source)
-            except Exception:
+            except youtube_dl.utils.DownloadError:
                 # Convers fetching errors such as 404s and geo-blocked content
                 pass
 
     @commands.before_invoke(record_usage)
-    @commands.command(name = 'shuffle', help = 'Shuffle the music playlist.')
+    @commands.command(name='shuffle', help='Shuffle the music playlist.')
     async def shuffle(self, ctx: commands.Context):
         '''
         Shuffles all songs in the queue.
@@ -97,7 +100,7 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Shuffled the playlist!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='pause', help = 'Pause music stream.')
+    @commands.command(name='pause', help='Pause music stream.')
     async def pause(self, ctx: commands.Context):
         '''
         Pause music.
@@ -116,7 +119,7 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Paused the music!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='resume', help = 'Resume music stream.')
+    @commands.command(name='resume', help='Resume music stream.')
     async def resume(self, ctx: commands.Context):
         '''
         Resume music.
@@ -135,7 +138,7 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Resumed the music!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name = 'skip', help = 'Skip the current music.')
+    @commands.command(name='skip', help='Skip the current music.')
     async def skip(self, ctx: commands.Context):
         '''
         Skip the song.
@@ -151,7 +154,7 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name = 'stop', help = 'Stop the entire playlist.')
+    @commands.command(name='stop', help='Stop the entire playlist.')
     async def stop(self, ctx: commands.Context):
         '''
         Stop the entire playlist by destroying the music controller.

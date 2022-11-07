@@ -3,7 +3,7 @@
 # utils/music/song.py
 #
 # @ start date          02 11 2022
-# @ last update         06 11 2022
+# @ last update         07 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -17,6 +17,11 @@ from functools import partial
 from youtube_dl import YoutubeDL
 
 from constants import YDL_OPTIONS
+
+#---------------------------------
+# Constants
+#---------------------------------
+FETCH_ATTEMPTS = 3
 
 #---------------------------------
 # Song
@@ -42,10 +47,17 @@ class Song:
     ):
         loop = loop or asyncio.get_event_loop()
 
-        with YoutubeDL(YDL_OPTIONS) as ydl:
-            to_run = partial(ydl.extract_info, url = search, download = False)
-        data = await loop.run_in_executor(None, to_run)
+        n_attempts = 0
+        while n_attempts < FETCH_ATTEMPTS:
+            with YoutubeDL(YDL_OPTIONS) as ydl:
+                to_run = partial(ydl.extract_info, url = search, download = False)
+            data = await loop.run_in_executor(None, to_run)
 
+            if data: break
+            else: n_attempts += 1
+
+            await asyncio.sleep(5)
+        
         if 'entries' in data:
             data = data['entries'][0]
 
@@ -59,8 +71,6 @@ class Song:
             'duration': data['duration'],
             'thumbnail': data['thumbnail'],
             'views': data['view_count'],
-            'age_limit': data['age_limit'],
-            'average_rating': data['average_rating'],
         }
 
     @classmethod

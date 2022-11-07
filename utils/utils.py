@@ -3,7 +3,7 @@
 # utils/utils.py
 #
 # @ start date          01 11 2022
-# @ last update         05 11 2022
+# @ last update         07 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -46,7 +46,7 @@ def soundcloud_playlist(url: str) -> List[str]:
 
     # Locate and extract playlist info from the scripts
     data_json_pattern = re.compile(r"\"tracks\":\[(.*?)\],\".*\":")
-    song_idx_pattern = re.compile(r"\"id\":(.*?),\"kind\":\"track\"")
+    song_idx_pattern = re.compile(r'"id":([^,]+),"kind":"track"')
     
     for script in scripts:
         m = re.search(data_json_pattern, str(script))
@@ -55,16 +55,13 @@ def soundcloud_playlist(url: str) -> List[str]:
         
     if not m:
         raise ValueError('Couldn\'t find the playlist info.')
-    
-    # Extract the id of each song
-    songs_idx = re.findall(song_idx_pattern, m.group(1))
 
-    # Convert the song_idx into a streamable url for that song
-    track_urls = []
-    for idx in songs_idx:
-        track_urls.append(f'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{idx}')
+    # Convert each song id into a streamable url for that song
+    urls = []
+    for idx in re.finditer(song_idx_pattern, m.group(1)): 
+        urls.append(f'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{idx.group(1)}')
 
-    return track_urls
+    return urls
 
 #---------------------------------
 # Spotify
@@ -80,14 +77,13 @@ async def spotify_album(spotify: spotipy.Spotify, code: str) -> List[str]:
         results = spotify.next(results)
         info.extend(results['items'])
 
-    track_names = []
-
-    for track_info in info:
-        track_names.append(
-            f'{track_info["name"]} - {",".join(x["name"] for x in track_info["artists"])}'
+    names = []
+    for track in info:
+        names.append(
+            f'{track["name"]} - {",".join(x["name"] for x in track["artists"])}'
         )
     
-    return track_names
+    return names
 
 async def spotify_playlist(spotify: spotipy.Spotify, code: str) -> List[str]:
     '''
@@ -104,16 +100,20 @@ async def spotify_playlist(spotify: spotipy.Spotify, code: str) -> List[str]:
         results = spotify.next(results)
         info.extend(results['items'])
 
-    track_names = []
-
-    for track_info in info:
-        track_names.append(
-            f'{track_info["track"]["name"]} - {",".join(x["name"] for x in track_info["track"]["artists"])}'
+    urls = []
+    for sample in info:
+        urls.append(
+            sample["track"]["external_urls"]["spotify"]
         )
     
-    return track_names
+    return urls
 
 async def handle_playlist_request(spotify: spotipy.Spotify, search: str) -> Union[List[str], str]:
+    '''
+    If the search term is an url for a playlist,
+    returns a list of all the songs in a playlist.
+    Otherwise, returns the search term.
+    '''
     # Spotify Playlist
     if 'https://open.spotify.com/playlist' in search:
         code = search.split('/')[-1].split('?')[0]

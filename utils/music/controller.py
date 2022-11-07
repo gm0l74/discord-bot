@@ -3,7 +3,7 @@
 # utils/music/controller.py
 #
 # @ start date          03 11 2022
-# @ last update         04 11 2022
+# @ last update         07 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -36,13 +36,13 @@ class Playlist(asyncio.Queue):
 class Controller:
     __slots__ = (
         'bot',
+        'cog',
         'guild',
         'channel',
-        'cog',
         'queue',
         'next',
-        'current',
-        'np'
+        'np',
+        'current'
     )
 
     def __init__(self, ctx: commands.Context):
@@ -88,11 +88,16 @@ class Controller:
                     continue
 
             self.current = song
+            # if self.guild.voice_client:
+            try:
+                self.guild.voice_client.play(song.source, after = lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
+            except discord.errors.ClientException:
+                continue
 
-            self.guild.voice_client.play(song.source, after = lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
             self.np = await self.channel.send(
                 f'**Now Playing:** `{song.title}` requested by `{song.requester}`'
             )
+            
             await self.next.wait()
             self.current = None
 
