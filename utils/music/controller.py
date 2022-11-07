@@ -47,7 +47,7 @@ class Controller:
 
     def __init__(self, ctx: commands.Context):
         self.bot = ctx.bot
-        self.cog = ctx.cog
+        self.cog = ctx.bot.get_cog('Music')
 
         self.guild = ctx.guild
         self.channel = ctx.channel

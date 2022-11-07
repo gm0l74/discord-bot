@@ -107,7 +107,7 @@ class Scheduled(commands.Cog):
     #---------------------------------------------------------------------------------------------------
     # TASK: Keane
     #---------------------------------------------------------------------------------------------------
-    @tasks.loop(time = time(3, 38, 40))
+    @tasks.loop(time = time(23, 0, 0))
     async def keane(self):
         '''
         Schedule a task to automatically queue the Spotify
@@ -150,21 +150,54 @@ class Scheduled(commands.Cog):
         '''
         Schedule a task to automatically wish a happy birthday.
         '''
-        async def _birthdays(channel: discord.channel.TextChannel, name: str):
-            msg = await channel.send(f'Parabéns chavalo retardado **`{name}`**! {":tada:" * 5}{":partying_face:" * 5}')
+        async def _birthdays(
+            guild_idx: str,
+            voice_channel_idx: str,
+            text_channel: discord.channel.TextChannel,
+            name: str
+        ):
+            # - Send chat message
+            msg = await text_channel.send(f'Parabéns **`{name}`**! {":tada:" * 5}{":partying_face:" * 5}')
             
-            # Reactions
+            # Add emoji reactions to the message
             await msg.add_reaction('\N{PARTY POPPER}')
             await msg.add_reaction('\N{FACE WITH PARTY HORN AND PARTY HAT}') 
+
+            # - Play audio
+            ctx = mock_ctx(
+                self.bot,
+                guild_idx, voice_channel_idx, None,
+                lambda m, **kwargs: asyncio.sleep(0)
+            )
+
+            guild = self.bot.get_guild(guild_idx)
+            if guild.voice_client:
+                await ctx.cog.disconnect(guild)
+            
+            # Update voice client
+            vc = await self.bot.get_channel(voice_channel_idx).connect()
+            ctx.voice_client = vc
+            ctx.guild.voice_client = vc
+
+            # Queue the song
+            await ctx.cog.play(
+                ctx,
+                'https://www.youtube.com/watch?v=scboWq7ZQGs'
+            )
 
         now = datetime.now().strftime('%d-%m')
         if now not in self.db:
             return
         
         name = self.db[now]
-        for _guild_idx, text_channel_idx in self.text_channels.items():
-            channel = self.bot.get_channel(text_channel_idx)
-            self.bot.loop.create_task(_birthdays(channel, name))
+        for guild_idx, text_channel_idx in self.text_channels.items():
+            text_channel = self.bot.get_channel(text_channel_idx)
+            self.bot.loop.create_task(_birthdays(
+                guild_idx,
+                self.voice_channels[guild_idx],
+                text_channel,
+                name
+            ))
 
     @birthdays.before_loop
     async def before_birthdays_task(self):

@@ -78,9 +78,16 @@ class Song:
         loop = loop or asyncio.get_event_loop()
         requester = data['requester']
 
-        with YoutubeDL(YDL_OPTIONS) as ydl:
-            to_run = partial(ydl.extract_info, url = data['webpage_url'], download = False)
-        data = await loop.run_in_executor(None, to_run)
+        n_attempts = 0
+        while n_attempts < FETCH_ATTEMPTS:
+            with YoutubeDL(YDL_OPTIONS) as ydl:
+                to_run = partial(ydl.extract_info, url = data['webpage_url'], download = False)
+            data = await loop.run_in_executor(None, to_run)
+
+            if data: break
+            else: n_attempts += 1
+
+            await asyncio.sleep(5)
 
         source = await discord.FFmpegOpusAudio.from_probe(data['url'])
         return cls(source = source, data = data, requester = requester)
