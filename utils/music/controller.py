@@ -88,10 +88,9 @@ class Controller:
                     continue
 
             self.current = song
-            # if self.guild.voice_client:
             try:
                 self.guild.voice_client.play(song.source, after = lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
-            except discord.errors.ClientException:
+            except:
                 continue
 
             self.np = await self.channel.send(

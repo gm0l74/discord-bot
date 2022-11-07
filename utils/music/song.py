@@ -21,7 +21,7 @@ from constants import YDL_OPTIONS
 #---------------------------------
 # Constants
 #---------------------------------
-FETCH_ATTEMPTS = 3
+N_LIMIT_ATTEMPTS = 3
 
 #---------------------------------
 # Song
@@ -48,7 +48,7 @@ class Song:
         loop = loop or asyncio.get_event_loop()
 
         n_attempts = 0
-        while n_attempts < FETCH_ATTEMPTS:
+        while n_attempts < N_LIMIT_ATTEMPTS:
             with YoutubeDL(YDL_OPTIONS) as ydl:
                 to_run = partial(ydl.extract_info, url = search, download = False)
             data = await loop.run_in_executor(None, to_run)
@@ -79,7 +79,7 @@ class Song:
         requester = data['requester']
 
         n_attempts = 0
-        while n_attempts < FETCH_ATTEMPTS:
+        while n_attempts < N_LIMIT_ATTEMPTS:
             with YoutubeDL(YDL_OPTIONS) as ydl:
                 to_run = partial(ydl.extract_info, url = data['webpage_url'], download = False)
             data = await loop.run_in_executor(None, to_run)

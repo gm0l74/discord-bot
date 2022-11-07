@@ -193,6 +193,7 @@ class Music(commands.Cog):
 
         songs = list(controller.queue._queue)[:10]
         msg = '```css\n'
+        msg += 'First 10 songs in the Queue:\n\n'
 
         for i, song in enumerate(songs):
             msg += f'{i+1}. {song["title"]} [{song["requester"].name}]\n'
