@@ -152,10 +152,10 @@ async def record_usage(_cog: commands.Cog, ctx: commands.Context):
         pass
     ```
     '''
-    os.makedirs('../logs', exist_ok = True)
+    os.makedirs('./logs', exist_ok = True)
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    log = f'{ctx.author} used {ctx.command} at {ctx.message.created_at}'
+    log = f'{ctx.author}:{ctx.command} @ {ctx.message.created_at}'
     with open('./logs/logs.log', 'a+') as f:
         f.write(f'[{now}] {log}\n')
     print(log)

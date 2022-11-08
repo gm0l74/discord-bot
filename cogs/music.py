@@ -53,7 +53,7 @@ class Music(commands.Cog):
         return controller
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='play', aliases = ['p'], help='Play a song using spotify or youtube.')
+    @commands.command(name='play', aliases=['p'], help='Play a song using spotify or youtube.')
     async def play(self, ctx: commands.Context, *search):
         '''
         Enqueue a song (fetched by YouTube URL or YouTube Search).
@@ -158,7 +158,7 @@ class Music(commands.Cog):
         await ctx.send(f'**`{ctx.author}`**: Skipped the song!')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='stop', help='Stop the entire playlist.')
+    @commands.command(name='stop', aliases=['mtt', 'matate'], help='Stop the entire playlist.')
     async def stop(self, ctx: commands.Context):
         '''
         Stop the entire playlist by destroying the music controller.

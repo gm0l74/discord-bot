@@ -3,7 +3,7 @@
 # cogs/sessions.py
 #
 # @ start date          03 11 2022
-# @ last update         07 11 2022
+# @ last update         08 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -141,6 +141,17 @@ class Jams(commands.Cog):
         await ctx.invoke(
             self.bot.get_command('play'),
             'https://soundcloud.com/erasojajao/sets/orbital-mix-best-of-1'
+        )
+
+    @commands.command(name='coding', help='Queues \'edm-coding\' by GMoita.')
+    async def coding(self, ctx: commands.Context):
+        '''
+        Queues Spotify playlist: 'edm-coding'.
+        '''
+        await ctx.send(f'**`{ctx.author}`**: Queued \'edm-coding\' by GMoita!')
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            'https://open.spotify.com/playlist/3k9m8Bnz4XOoA3e7Ximz3k?si=6c781604be994c94'
         )
 
 #---------------------------------
