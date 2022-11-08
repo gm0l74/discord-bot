@@ -3,13 +3,14 @@
 # utils/utils.py
 #
 # @ start date          01 11 2022
-# @ last update         07 11 2022
+# @ last update         08 11 2022
 #---------------------------------
 
 #---------------------------------
 # Imports
 #---------------------------------
-import requests, re
+import os, requests, re
+from datetime import datetime
 from bs4 import BeautifulSoup
 from discord.ext import commands
 
@@ -151,4 +152,10 @@ async def record_usage(_cog: commands.Cog, ctx: commands.Context):
         pass
     ```
     '''
-    print(ctx.author, 'used', ctx.command, 'at', ctx.message.created_at)
+    os.makedirs('../logs', exist_ok = True)
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    log = f'{ctx.author} used {ctx.command} at {ctx.message.created_at}'
+    with open('./logs/logs.log', 'a+') as f:
+        f.write(f'[{now}] {log}\n')
+    print(log)
