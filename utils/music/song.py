@@ -16,7 +16,7 @@ import asyncio
 from functools import partial
 from youtube_dl import YoutubeDL
 
-from constants import YDL_OPTIONS
+from constants import YDL_OPTIONS, FFMPEG_OPTIONS
 
 #---------------------------------
 # Constants
@@ -89,5 +89,5 @@ class Song:
 
             await asyncio.sleep(5)
 
-        source = await discord.FFmpegOpusAudio.from_probe(data['url']) # TODO: requires more testing
+        source = await discord.FFmpegOpusAudio.from_probe(data['url'], **FFMPEG_OPTIONS) # TODO: requires more testing
         return cls(source = source, data = data, requester = requester)
