@@ -10,6 +10,7 @@
 # Imports
 #---------------------------------
 import os, asyncio, discord
+from datetime import datetime
 from discord.ext import commands
 
 from dotenv import load_dotenv
@@ -43,9 +44,14 @@ except:
 # Client [BOT]
 #---------------------------------
 class Client(commands.Bot):
-    async def on_error(event, *args, **kwargs):
+    async def on_command_error(self, ctx, error):
+        await super().on_command_error(ctx, error)
+
+        os.makedirs('./logs', exist_ok = True)
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         with open('./logs/errors.log', 'a+') as f:
-            f.write(f'({event}): {args[0]}\n')
+            f.write(f'[{now}] {error}\n')
 
     async def on_ready(self):
         print(f'{self.user.name} has connected to Discord!')

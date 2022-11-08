@@ -3,7 +3,7 @@
 # cogs/music.py
 #
 # @ start date          02 11 2022
-# @ last update         07 11 2022
+# @ last update         08 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -66,7 +66,11 @@ class Music(commands.Cog):
         controller = self.get_controller_for(ctx)
 
         # Handle Playlists
-        queries = await handle_playlist_request(self.spotify, search)
+        try:
+            queries = await handle_playlist_request(self.spotify, search)
+        except ValueError:
+            await ctx.send('Error while processing playlist.')
+
         if isinstance(queries, str):
             queries = [search]
         
@@ -238,7 +242,8 @@ class Music(commands.Cog):
 
     async def disconnect(self, guild: discord.Guild):
         await guild.voice_client.disconnect()
-        del self.controllers[guild.id]
+        if guild.id in self.controllers:
+            del self.controllers[guild.id]
 
 #---------------------------------
 # Setup

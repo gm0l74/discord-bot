@@ -3,7 +3,7 @@
 # utils/music/controller.py
 #
 # @ start date          03 11 2022
-# @ last update         07 11 2022
+# @ last update         08 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -88,10 +88,14 @@ class Controller:
                     continue
 
             self.current = song
-            try:
-                self.guild.voice_client.play(song.source, after = lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
-            except:
-                continue
+            if self.guild.voice_client:
+                try:
+                    self.guild.voice_client.play(
+                        song.source,
+                        after = lambda _: self.bot.loop.call_soon_threadsafe(self.next.set)
+                    )
+                except:
+                    continue
 
             self.np = await self.channel.send(
                 f'**Now Playing:** `{song.title}` requested by `{song.requester}`'

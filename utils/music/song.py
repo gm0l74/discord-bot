@@ -3,7 +3,7 @@
 # utils/music/song.py
 #
 # @ start date          02 11 2022
-# @ last update         07 11 2022
+# @ last update         08 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -89,5 +89,5 @@ class Song:
 
             await asyncio.sleep(5)
 
-        source = await discord.FFmpegOpusAudio.from_probe(data['url'])
+        source = await discord.FFmpegOpusAudio.from_probe(data['url']) # TODO: requires more testing
         return cls(source = source, data = data, requester = requester)
