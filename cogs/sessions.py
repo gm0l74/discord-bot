@@ -154,6 +154,17 @@ class Jams(commands.Cog):
             'https://open.spotify.com/playlist/3k9m8Bnz4XOoA3e7Ximz3k?si=6c781604be994c94'
         )
 
+    @commands.command(name='hanji', help='Queues \'Tom Ching Cheng Hanji\' (10m).')
+    async def hanji(self, ctx: commands.Context):
+        '''
+        Queues 'Tom Ching Cheng Hanji'.
+        '''
+        await ctx.send(f'**`{ctx.author}`**: Queued \'Tom Ching Cheng Hanji\'!')
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            'https://www.youtube.com/watch?v=qGk4E9ss95s'
+        )
+
 #---------------------------------
 # Setup
 #---------------------------------

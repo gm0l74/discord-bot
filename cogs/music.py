@@ -177,6 +177,7 @@ class Music(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.command(name='queue', help='Show the current playlist.')
     async def queue(self, ctx: commands.Context):
+        # Command raised an exception: AttributeError: 'str' object has no attribute 'name'
         '''
         Show the current playlist.
         '''
@@ -195,12 +196,12 @@ class Music(commands.Cog):
                 delete_after = 15
             )
 
-        songs = list(controller.queue._queue)[:10]
+        songs = list(controller.queue._queue)
         msg = '```css\n'
-        msg += 'First 10 songs in the Queue:\n\n'
+        msg += f'First 10 songs in the Playlist Queue ({len(songs)}):\n\n'
 
-        for i, song in enumerate(songs):
-            msg += f'{i+1}. {song["title"]} [{song["requester"].name}]\n'
+        for i, song in enumerate(songs[:10]):
+            msg += f'{i+1}. {song["title"]} [{song["duration"]}]\n'
 
         msg += '```'
         await ctx.send(msg)

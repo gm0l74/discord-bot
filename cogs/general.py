@@ -23,6 +23,7 @@ class General(commands.Cog):
         ms = (t.created_at - ctx.message.created_at).total_seconds() * 1000
         await t.edit(content = 'Pong! {} ms'.format(int(ms)))
 
+    # ----------------------- GIFs -----------------------
     @commands.before_invoke(record_usage)
     @commands.command(name='gay', help='Quem?')
     async def gay(self, ctx: commands.Context):
@@ -34,9 +35,19 @@ class General(commands.Cog):
         await ctx.send('https://tenor.com/view/rip-bozo-gif-22294771')
 
     @commands.before_invoke(record_usage)
-    @commands.command(name='jacinto', help='Jacinto Leite?')
+    @commands.command(name='jacinto', help='Jacinto Leite')
     async def jacinto(self, ctx: commands.Context):
         await ctx.send('https://tenor.com/view/milk-milk-man-fresh-milk-gif-22164239')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='lakaka', help='Wild Lakaka')
+    async def lakaka(self, ctx: commands.Context):
+        await ctx.send('https://tenor.com/view/lakaka-lakaka-meme-lukaku-chelsea-lukaku-chelsea-gif-23708248')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='gatodron', aliases=['dron'], help='Drone mais são')
+    async def gatodron(self, ctx: commands.Context):
+        await ctx.send('https://tenor.com/view/jasminevampirecatswing-gif-20689177')
 
 #---------------------------------
 # Setup
