@@ -89,5 +89,5 @@ class Song:
 
             await asyncio.sleep(5)
 
-        source = await discord.FFmpegOpusAudio.from_probe(data['url'], **FFMPEG_OPTIONS) # TODO: requires more testing
+        source = await discord.FFmpegOpusAudio.from_probe(data['url'], **FFMPEG_OPTIONS)
         return cls(source = source, data = data, requester = requester)

@@ -3,7 +3,7 @@
 # cogs/scheduled.py
 #
 # @ start date          03 11 2022
-# @ last update         07 11 2022
+# @ last update         10 11 2022
 #---------------------------------
 
 #---------------------------------
@@ -156,34 +156,12 @@ class Scheduled(commands.Cog):
             text_channel: discord.channel.TextChannel,
             name: str
         ):
-            # - Send chat message
+            # Send chat message
             msg = await text_channel.send(f'Parabéns **`{name}`**! {":tada:" * 5}{":partying_face:" * 5}')
             
             # Add emoji reactions to the message
             await msg.add_reaction('\N{PARTY POPPER}')
             await msg.add_reaction('\N{FACE WITH PARTY HORN AND PARTY HAT}') 
-
-            # - Play audio
-            ctx = mock_ctx(
-                self.bot,
-                guild_idx, voice_channel_idx, None,
-                lambda m, **kwargs: asyncio.sleep(0)
-            )
-
-            guild = self.bot.get_guild(guild_idx)
-            if guild.voice_client:
-                await ctx.cog.disconnect(guild)
-            
-            # Update voice client
-            vc = await self.bot.get_channel(voice_channel_idx).connect()
-            ctx.voice_client = vc
-            ctx.guild.voice_client = vc
-
-            # Queue the song
-            await ctx.cog.play(
-                ctx,
-                'https://www.youtube.com/watch?v=scboWq7ZQGs'
-            )
 
         now = datetime.now().strftime('%d-%m')
         if now not in self.db:
