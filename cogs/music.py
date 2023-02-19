@@ -3,7 +3,7 @@
 # cogs/music.py
 #
 # @ start date          02 11 2022
-# @ last update         08 11 2022
+# @ last update         19 02 2023
 #---------------------------------
 
 #---------------------------------
@@ -11,7 +11,7 @@
 #---------------------------------
 import asyncio
 
-import discord, spotipy, youtube_dl
+import discord, spotipy, yt_dlp
 from discord.ext import commands
 
 from utils import record_usage, handle_playlist_request
@@ -89,7 +89,7 @@ class Music(commands.Cog):
             try:
                 source = await Song.create_source(ctx, search, loop = self.bot.loop)
                 await controller.queue.put(source)
-            except youtube_dl.utils.DownloadError:
+            except yt_dlp.utils.DownloadError:
                 # Convers fetching errors such as 404s and geo-blocked content
                 pass
 

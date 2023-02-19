@@ -3,7 +3,7 @@
 # utils/music/song.py
 #
 # @ start date          02 11 2022
-# @ last update         08 11 2022
+# @ last update         19 02 2023
 #---------------------------------
 
 #---------------------------------
@@ -14,7 +14,7 @@ from discord.ext import commands
 
 import asyncio
 from functools import partial
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 
 from constants import YDL_OPTIONS, FFMPEG_OPTIONS
 
