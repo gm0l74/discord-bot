@@ -25,7 +25,7 @@ class Object(object):
 
 # Hacky workaround to get around the fact that discord.py
 # doesnt provide 'context' to a task.loop
-# 
+#
 # Manuallly create the context with the necessary fields
 def mock_ctx(
     bot: commands.Bot,
@@ -36,7 +36,7 @@ def mock_ctx(
 ):
     ctx = Object()
     ctx.voice_client = voice_client
-    
+
     ctx.guild = Object()
     ctx.guild.voice_client = voice_client
     ctx.guild.id = guild_idx
@@ -58,7 +58,7 @@ def mock_ctx(
 class Scheduled(commands.Cog):
     '''
     Collection of scheduled tasks.
-    
+
     Attributes:
         bot: commands.Bot
             Bot instance that is executing the commands.
@@ -88,7 +88,7 @@ class Scheduled(commands.Cog):
                 # [FIFO]
                 self.voice_channels[guild.id] = channel.id
                 break
-        
+
             for channel in guild.text_channels:
                 # Lock the bot to a single text channel
                 # [FIFO]
@@ -120,7 +120,7 @@ class Scheduled(commands.Cog):
             except:
                 # Already connected to a voice channel
                 vc = self.bot.get_guild(guild_idx).voice_client
-            
+
             text = self.bot.get_channel(self.text_channels[guild_idx])
             ctx = mock_ctx(
                 self.bot,
@@ -129,9 +129,9 @@ class Scheduled(commands.Cog):
             )
             await ctx.cog.play(
                 ctx,
-                'https://open.spotify.com/playlist/37i9dQZF1DZ06evO2YcT04?si=b935ac263b7447a5'
+                'https://open.spotify.com/track/609vJX1mWBVtteIjcJj9oa?si=4dd8f5287c3f44e2'
             )
-            
+
         for guild_idx, channel_idx in self.voice_channels.items():
             self.bot.loop.create_task(_keane(
                 guild_idx = guild_idx,
@@ -158,15 +158,15 @@ class Scheduled(commands.Cog):
         ):
             # Send chat message
             msg = await text_channel.send(f'Parabéns **`{name}`**! {":tada:" * 5}{":partying_face:" * 5}')
-            
+
             # Add emoji reactions to the message
             await msg.add_reaction('\N{PARTY POPPER}')
-            await msg.add_reaction('\N{FACE WITH PARTY HORN AND PARTY HAT}') 
+            await msg.add_reaction('\N{FACE WITH PARTY HORN AND PARTY HAT}')
 
         now = datetime.now().strftime('%d-%m')
         if now not in self.db:
             return
-        
+
         name = self.db[now]
         for guild_idx, text_channel_idx in self.text_channels.items():
             text_channel = self.bot.get_channel(text_channel_idx)
