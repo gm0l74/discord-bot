@@ -3,7 +3,7 @@
 # cogs/sessions.py
 #
 # @ start date          03 11 2022
-# @ last update         08 11 2022
+# @ last update         16 06 2023
 #---------------------------------
 
 #---------------------------------
@@ -163,6 +163,17 @@ class Jams(commands.Cog):
         await ctx.invoke(
             self.bot.get_command('play'),
             'https://www.youtube.com/watch?v=qGk4E9ss95s'
+        )
+
+    @commands.command(name='castigo', aliases=['bruno', 'espreme'], help='Queues \'BRUNO DE CARVALHO - CASTIGO\'.')
+    async def castigo(self, ctx: commands.Context):
+        '''
+        Queues 'BRUNO DE CARVALHO - CASTIGO'.
+        '''
+        await ctx.send(f'**`{ctx.author}`**: Queued \'BRUNO DE CARVALHO - CASTIGO\'!')
+        await ctx.invoke(
+            self.bot.get_command('play'),
+            'https://www.youtube.com/watch?v=cqL2SdJ4xsM'
         )
 
 #---------------------------------
