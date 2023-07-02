@@ -58,7 +58,7 @@ class General(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.command(name='prod', aliases=['test'], help='Real men test in prod')
     async def prod(self, ctx: commands.Context):
-        await ctx.send('https://twitter.com/tunguz/status/1675172426563596288')
+        await ctx.send('https://cdn.discordapp.com/attachments/222829160161083397/1125165572515168366/IMG_1793.png')
 
 #---------------------------------
 # Setup
