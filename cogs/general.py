@@ -23,6 +23,12 @@ class General(commands.Cog):
         ms = (t.created_at - ctx.message.created_at).total_seconds() * 1000
         await t.edit(content = 'Pong! {} ms'.format(int(ms)))
 
+    @commands.before_invoke(record_usage)
+    @commands.command(name='spam', help='Beef spam')
+    async def spam(self, ctx: commands.Context):
+        for _ in range(20):
+            await ctx.send('<:residentsleeper:727251287892295770>')
+
     # ----------------------- GIFs -----------------------
     @commands.before_invoke(record_usage)
     @commands.command(name='gay', help='Quem?')
@@ -48,6 +54,11 @@ class General(commands.Cog):
     @commands.command(name='gatodron', aliases=['dron'], help='Drone mais são')
     async def gatodron(self, ctx: commands.Context):
         await ctx.send('https://tenor.com/view/jasminevampirecatswing-gif-20689177')
+
+    @commands.before_invoke(record_usage)
+    @commands.command(name='prod', aliases=['test'], help='Real men test in prod')
+    async def prod(self, ctx: commands.Context):
+        await ctx.send('https://twitter.com/tunguz/status/1675172426563596288')
 
 #---------------------------------
 # Setup
