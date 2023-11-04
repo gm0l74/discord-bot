@@ -31,7 +31,7 @@ class General(commands.Cog):
 
     @commands.before_invoke(record_usage)
     @commands.command(name='antispam', help='Beef anti spam')
-    async def spam(self, ctx: commands.Context):
+    async def antispam(self, ctx: commands.Context):
         for _ in range(10):
             await ctx.send('https://tenor.com/bG8Ja.gif')
             await ctx.send('https://tenor.com/bdek9.gif')
