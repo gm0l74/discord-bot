@@ -29,6 +29,13 @@ class General(commands.Cog):
         for _ in range(20):
             await ctx.send('<:residentsleeper:727251287892295770>')
 
+    @commands.before_invoke(record_usage)
+    @commands.command(name='antispam', help='Beef anti spam')
+    async def spam(self, ctx: commands.Context):
+        for _ in range(10):
+            await ctx.send('https://tenor.com/pt-PT/view/twomenkissing-twoblackmenkissing-kissing-kiss-gaykiss-gif-22635642')
+            await ctx.send('https://tenor.com/pt-PT/view/kiss-make-out-hot-gay-mlm-gif-15507377')
+
     # ----------------------- GIFs -----------------------
     @commands.before_invoke(record_usage)
     @commands.command(name='gay', help='Quem?')
