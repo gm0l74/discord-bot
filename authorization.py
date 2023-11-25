@@ -9,7 +9,7 @@
 #---------------------------------
 # Imports
 #---------------------------------
-import discord
+from typing import Any
 from datetime import datetime
 
 DATE_FORMAT = "%d/%m/%Y,%H:%M:%S"
@@ -29,7 +29,7 @@ def is_within_antispam_blackout(now: datetime = datetime.now()) -> bool:
 
    return is_weekday and is_within_time
 
-def is_antispam_allowed(ctx: discord.ext.commands.Context) -> bool:
+def is_antispam_allowed(ctx: Any) -> bool:
    """
    Checks if the user is allowed to perform an "antispam" action.
    Returns true if **allowed**, otherwise returns false.

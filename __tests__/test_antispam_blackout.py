@@ -13,8 +13,6 @@ import unittest
 
 import sys
 sys.path.append("..")
-print(sys.path)
-
 from authorization import is_within_antispam_blackout, DATE_FORMAT
 
 #---------------------------------
@@ -48,3 +46,9 @@ class TestAntiSpamBlackout(unittest.TestCase):
    def should_allow_weekend_8am(self):
       date = "25/11/2023,8:00:00".strptime(date, DATE_FORMAT)
       self.assertEqual(is_within_antispam_blackout(date), True)
+
+#---------------------------------
+# Main
+#---------------------------------
+if __name__ == '__main__':
+   unittest.main()
