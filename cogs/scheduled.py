@@ -9,7 +9,7 @@
 #---------------------------------
 # Imports
 #---------------------------------
-import os, json, asyncio
+import os, json
 from datetime import datetime, time
 
 import discord, spotipy

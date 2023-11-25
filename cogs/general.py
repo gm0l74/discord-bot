@@ -3,7 +3,7 @@
 # cogs/general.py
 #
 # @ start date          01 11 2022
-# @ last update         07 11 2022
+# @ last update         25 11 2023
 #---------------------------------
 
 #---------------------------------
@@ -11,6 +11,10 @@
 #---------------------------------
 from discord.ext import commands
 from utils import record_usage
+
+import sys
+sys.path.append("..")
+from authorization import is_antispam_allowed
 
 #---------------------------------
 # General [COG]
@@ -32,7 +36,11 @@ class General(commands.Cog):
     @commands.before_invoke(record_usage)
     @commands.command(name='antispam', help='Beef anti spam')
     async def antispam(self, ctx: commands.Context):
-        for _ in range(10):
+        if not is_antispam_allowed(ctx):
+            await ctx.send(':clown:' * 5)
+            return
+        
+        for _ in range(4):
             await ctx.send('https://tenor.com/bG8Ja.gif')
             await ctx.send('https://tenor.com/bdek9.gif')
 
