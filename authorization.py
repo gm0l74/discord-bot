@@ -34,13 +34,12 @@ def is_antispam_allowed(ctx: Any) -> bool:
    Checks if the user is allowed to perform an "antispam" action.
    Returns true if **allowed**, otherwise returns false.
    """
-   if not is_within_antispam_blackout():
+   timestamp = datetime.now()
+   if is_within_antispam_blackout(timestamp):
       return False
    
    # Check if user has already "antispammed" today
    username = ctx.author
-   timestamp = datetime.now()
-
    is_first_time = (username not in antispam_registry)
 
    if not is_first_time:
